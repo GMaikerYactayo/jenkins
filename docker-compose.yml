@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
       MYSQL_URL: jdbc:mysql://mysql:3306/product_service_db
       MYSQL_USERNAME: root

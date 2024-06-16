@@ -7,7 +7,7 @@ RUN mkdir -p /home/app
 COPY target/github-actions-0.0.1-SNAPSHOT.jar /home/app/jenkins.jar
 
 # Puerto en el que la aplicación expone sus servicios
-EXPOSE 8080
+EXPOSE 8081
 
 # Comando para ejecutar la aplicación
 CMD ["java", "-jar", "/home/app/jenkins.jar"]

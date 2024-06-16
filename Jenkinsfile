@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REPO_URL = 'https://github.com/Java-Techie-jt/devops-automation'
+        REPO_URL = 'https://github.com/GMaikerYactayo/jenkins'
         BRANCH = 'main'
     }
 

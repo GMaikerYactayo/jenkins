@@ -43,13 +43,8 @@ pipeline {
                         }
                         sh './mvnw test -Dtest=ProductServiceTest'
                     }
-                    steps {
-                        script {
-                            echo 'Running ProductControllerTest...'
-                        }
-                        sh './mvnw test -Dtest=ProductControllerTest'
-                    }
                 }
+
                 stage('Test Units') {
                     steps {
                         script {

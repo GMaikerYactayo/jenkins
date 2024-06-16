@@ -47,6 +47,26 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             }
         }
+
+        stage('Build docker image'){
+            steps{
+                script{
+                    echo 'Building image....'
+                }
+                sh 'docker build --platform linux -t maikergonzales/jenkins:v1 -f Dockerfile .'
+            }
+        }
+
+        stage('Push image to Hub'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: '${PASSWORD_DOCKER}', variable: 'dockerhubpwd')]) {
+                        sh 'docker login -u maikergonzales -p ${dockerhubpwd}'
+                    }
+                    sh 'docker push maikergonzales/jenkins:v1'
+                }
+            }
+        }
     }
 
     post {

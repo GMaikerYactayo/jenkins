@@ -53,7 +53,7 @@ pipeline {
                 script{
                     echo 'Building image....'
                 }
-                sh 'docker build --platform linux -t maikergonzales/jenkins:v1 -f Dockerfile .'
+                sh 'docker build --platform linux -t maikergonzales/jenkins-service:v1 -f Dockerfile .'
             }
         }
 
@@ -63,7 +63,7 @@ pipeline {
                     withCredentials([string(credentialsId: '${PASSWORD_DOCKER}', variable: 'dockerhubpwd')]) {
                         sh 'docker login -u maikergonzales -p ${dockerhubpwd}'
                     }
-                    sh 'docker push maikergonzales/jenkins:v1'
+                    sh 'docker push maikergonzales/jenkins-service:v1'
                 }
             }
         }

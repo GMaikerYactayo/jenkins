@@ -32,23 +32,17 @@ pipeline {
                     }
                 }
                 stage('Test Units') {
-                    parallel {
-                        stage('ProductServiceTest') {
-                            steps {
-                                script {
-                                    echo 'Running ProductServiceTest...'
-                                }
-                                sh './mvnw test -Dtest=ProductServiceTest'
-                            }
+                    steps {
+                        script {
+                            echo 'Running ProductServiceTest...'
                         }
-                        stage('ProductControllerTest') {
-                            steps {
-                                script {
-                                    echo 'Running ProductControllerTest...'
-                                }
-                                sh './mvnw test -Dtest=ProductControllerTest'
-                            }
+                        sh './mvnw test -Dtest=ProductServiceTest'
+                    }
+                    steps {
+                        script {
+                            echo 'Running ProductControllerTest...'
                         }
+                        sh './mvnw test -Dtest=ProductControllerTest'
                     }
                 }
             }
@@ -60,6 +54,17 @@ pipeline {
                 }
                 sh './mvnw package'
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    echo 'Preparing to deploy...'
+                    def blueGreen = input message: '¿Desplegar a producción?', parameters: [booleanParam(defaultValue: true, description: '¿Desplegar?', name: 'deploy')]
+                    if (blueGreen) {
+                        sh './deploy-blue-green.sh'
+                    }
+                }
             }
         }
     }

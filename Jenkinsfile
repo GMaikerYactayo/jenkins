@@ -1,42 +1,54 @@
 pipeline {
     agent any
     environment {
-        REPO_URL = 'https://github.com/GMaikerYactayo/jenkins'
+        REPO_URL = 'https://github.com/Java-Techie-jt/devops-automation'
         BRANCH = 'main'
     }
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    echo "Clonando el repositorio desde ${REPO_URL}..."
+                    echo "Cloning the repository from ${REPO_URL}..."
                 }
                 checkout([$class: 'GitSCM', branches: [[name: "*/${BRANCH}"]], extensions: [], userRemoteConfigs: [[url: "${REPO_URL}"]]])
             }
         }
-        stage('Build') {
+        stage('Build project') {
             steps {
                 script {
-                    echo 'Compilando el proyecto...'
+                    echo 'Compiling the project...'
                 }
                 sh './mvnw clean install'
             }
         }
         stage('Test') {
             parallel {
-                stage('Unit Tests') {
+                stage('Test Integration') {
                     steps {
                         script {
-                            echo 'Ejecutando pruebas unitarias...'
+                            echo 'Running ProductRepositoryTest...'
                         }
-                        sh './mvnw test -Dtest=*UnitTest'
+                        sh './mvnw test -Dtest=ProductRepositoryTest'
                     }
                 }
-                stage('Integration Tests') {
-                    steps {
-                        script {
-                            echo 'Ejecutando pruebas de integración...'
+                stage('Test Units') {
+                    parallel {
+                        stage('ProductServiceTest') {
+                            steps {
+                                script {
+                                    echo 'Running ProductServiceTest...'
+                                }
+                                sh './mvnw test -Dtest=ProductServiceTest'
+                            }
                         }
-                        sh './mvnw verify -Dtest=*IntegrationTest'
+                        stage('ProductControllerTest') {
+                            steps {
+                                script {
+                                    echo 'Running ProductControllerTest...'
+                                }
+                                sh './mvnw test -Dtest=ProductControllerTest'
+                            }
+                        }
                     }
                 }
             }
@@ -44,42 +56,28 @@ pipeline {
         stage('Package') {
             steps {
                 script {
-                    echo 'Empaquetando la aplicación...'
+                    echo 'Packaging the application...'
                 }
                 sh './mvnw package'
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    echo 'Preparándose para desplegar...'
-                    def blueGreen = input message: '¿Desplegar a producción?', parameters: [booleanParam(defaultValue: true, description: '¿Desplegar?', name: 'deploy')]
-                    if (blueGreen) {
-                        sh './deploy-blue-green.sh'
-                    }
-                }
             }
         }
     }
     post {
         success {
             script {
-                echo 'Pipeline completado exitosamente.'
+                echo 'Pipeline completed successfully.'
             }
-            // Aquí puedes agregar una notificación en caso de éxito, por ejemplo, a Slack o correo electrónico.
         }
         failure {
             script {
-                echo 'El pipeline ha fallado.'
+                echo 'The pipeline has failed.'
             }
-            // Aquí puedes agregar una notificación en caso de fallo.
         }
         always {
             script {
-                echo 'Pipeline finalizado.'
+                echo 'Pipeline completed.'
             }
-            // Aquí puedes agregar pasos que deben ejecutarse siempre, como limpiar archivos temporales.
         }
     }
 }

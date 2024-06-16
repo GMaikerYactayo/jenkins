@@ -27,7 +27,7 @@ pipeline {
 
         stage('Test') {
             parallel {
-                stage('Test Integration') {
+                stage('Test Integration Repository') {
                     steps {
                         script {
                             echo 'Running ProductRepositoryTest...'
@@ -36,7 +36,7 @@ pipeline {
                     }
                 }
 
-                stage('Test Units') {
+                stage('Test Units Service') {
                     steps {
                         script {
                             echo 'Running ProductServiceTest...'
@@ -45,7 +45,7 @@ pipeline {
                     }
                 }
 
-                stage('Test Units') {
+                stage('Test Units Controller') {
                     steps {
                         script {
                             echo 'Running ProductControllerTest...'

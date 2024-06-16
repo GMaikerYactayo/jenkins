@@ -1,9 +1,11 @@
 pipeline {
     agent any
+
     environment {
         REPO_URL = 'https://github.com/Java-Techie-jt/devops-automation'
         BRANCH = 'main'
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -13,6 +15,7 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: "*/${BRANCH}"]], extensions: [], userRemoteConfigs: [[url: "${REPO_URL}"]]])
             }
         }
+
         stage('Build project') {
             steps {
                 script {
@@ -21,6 +24,7 @@ pipeline {
                 sh './mvnw clean install'
             }
         }
+
         stage('Test') {
             parallel {
                 stage('Test Integration') {
@@ -31,6 +35,7 @@ pipeline {
                         sh './mvnw test -Dtest=ProductRepositoryTest'
                     }
                 }
+
                 stage('Test Units') {
                     steps {
                         script {
@@ -38,15 +43,15 @@ pipeline {
                         }
                         sh './mvnw test -Dtest=ProductServiceTest'
                     }
-                    steps {
-                        script {
-                            echo 'Running ProductControllerTest...'
-                        }
+
+                    script {
+                        echo 'Running ProductControllerTest...'
                         sh './mvnw test -Dtest=ProductControllerTest'
                     }
                 }
             }
         }
+
         stage('Package') {
             steps {
                 script {
@@ -56,18 +61,8 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
             }
         }
-        stage('Deploy') {
-            steps {
-                script {
-                    echo 'Preparing to deploy...'
-                    def blueGreen = input message: '¿Desplegar a producción?', parameters: [booleanParam(defaultValue: true, description: '¿Desplegar?', name: 'deploy')]
-                    if (blueGreen) {
-                        sh './deploy-blue-green.sh'
-                    }
-                }
-            }
-        }
     }
+
     post {
         success {
             script {

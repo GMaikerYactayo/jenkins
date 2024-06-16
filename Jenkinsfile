@@ -27,32 +27,24 @@ pipeline {
 
         stage('Test') {
             parallel {
+                stage('Test Units') {
+                    steps {
+                        script {
+                            echo 'Running ProductServiceTest...'
+                        }
+                        sh './mvnw test -Dtest=*UnitTest'
+                    }
+                }
+
                 stage('Test Integration Repository') {
                     steps {
                         script {
                             echo 'Running ProductRepositoryTest...'
                         }
-                        sh './mvnw test -Dtest=ProductRepositoryTest'
+                        sh './mvnw test -Dtest=*IntegrationTest'
                     }
                 }
 
-                stage('Test Units Service') {
-                    steps {
-                        script {
-                            echo 'Running ProductServiceTest...'
-                        }
-                        sh './mvnw test -Dtest=ProductServiceTest'
-                    }
-                }
-
-                stage('Test Units Controller') {
-                    steps {
-                        script {
-                            echo 'Running ProductControllerTest...'
-                        }
-                        sh './mvnw test -Dtest=ProductControllerTest'
-                    }
-                }
             }
         }
 

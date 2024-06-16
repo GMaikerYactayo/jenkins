@@ -32,7 +32,7 @@ pipeline {
                         script {
                             echo 'Running test...'
                         }
-                        sh './mvnw test -Ptest'
+                        sh './mvnw test'
                     }
                 }
             }

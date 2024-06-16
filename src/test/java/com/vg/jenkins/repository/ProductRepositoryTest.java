@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @DisplayName("Product repository test")
-@ActiveProfiles("test")
 @DataJpaTest
-class ProductRepositoryIntegrationTest {
+class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;

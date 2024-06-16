@@ -30,21 +30,11 @@ pipeline {
                 stage('Test Units') {
                     steps {
                         script {
-                            echo 'Running ProductServiceTest...'
+                            echo 'Running test...'
                         }
-                        sh './mvnw test -Dtest=*UnitTest'
+                        sh './mvnw test'
                     }
                 }
-
-                stage('Test Integration Repository') {
-                    steps {
-                        script {
-                            echo 'Running ProductRepositoryTest...'
-                        }
-                        sh './mvnw test -Dtest=*IntegrationTest'
-                    }
-                }
-
             }
         }
 

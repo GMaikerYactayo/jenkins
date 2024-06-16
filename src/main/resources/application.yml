@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: test
+  application:
+    name: product-service
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/product_service_db}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always

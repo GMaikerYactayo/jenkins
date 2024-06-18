@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        dockerTool 'Docker'
-    }
-
     environment {
         REPO_URL = 'https://github.com/GMaikerYactayo/jenkins'
         BRANCH = 'main'

@@ -66,6 +66,7 @@ pipeline {
             steps{
                 script{
                     withCredentials([string(credentialsId: '${PASSWORD_DOCKER}', variable: 'dockerhubpwd')]) {
+                        echo '${dockerhubpwd}'
                         sh 'docker login -u maikergonzales -p ${dockerhubpwd}'
                     }
                     sh 'docker push maikergonzales/jenkins-service:v1'

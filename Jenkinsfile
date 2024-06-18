@@ -24,7 +24,7 @@ pipeline {
             steps{
                 script{
                     echo 'Deploying to Kubernetes...'
-                    withCredentials([file(credentialsId: 'CONFK8S', variable: 'CONFIG_FILE')]) {
+                    withCredentials([file(credentialsId: 'k8s', variable: 'CONFIG_FILE')]) {
                         sh "kubectl --kubeconfig=${CONFIG_FILE} version"
                     }
                 }

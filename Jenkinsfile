@@ -21,12 +21,12 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes'){
-            steps {
-                script {
-                    kubernetesDeploy(
-                        kubeconfigId: '${k8s}',
-                        configs: 'k8s/*.yaml',
-                    )
+            steps{
+                script{
+                    echo 'Deploying to Kubernetes...'
+                    withCredentials([file(credentialsId: 'k8s', variable: 'k8s')]) {
+                        sh "kubectl --kubeconfig=${k8s} version"
+                    }
                 }
             }
         }

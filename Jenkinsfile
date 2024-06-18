@@ -62,8 +62,6 @@ pipeline {
                 script{
                     withCredentials([string(credentialsId: '${PASSWORD_DOCKER}', variable: 'dockerhubpwd')]) {
                         sh 'docker login -u maikergonzales -p ${dockerhubpwd}'
-                    docker.withRegistry('https://registry.example.com', 'docker-credentials') {
-                                            docker.image(DOCKER_IMAGE).push()
                     }
                     sh 'docker push maikergonzales/jenkins-service:v1'
                 }

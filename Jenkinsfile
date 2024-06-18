@@ -57,7 +57,7 @@ pipeline {
                 script{
                     echo 'Building image....'
                 }
-                sh 'docker build --platform linux -t maikergonzales/jenkins-service:v1 -f Dockerfile .'
+                sh 'docker build -t maikergonzales/jenkins-service:v1 -f Dockerfile .'
             }
         }
 

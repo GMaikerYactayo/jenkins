@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-service
+  labels:
+    app: jenkins-service
+  namespace: docker-kubernetes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-service
+  template:
+    metadata:
+      labels:
+        app: jenkins-service
+    spec:
+      containers:
+        - name: jenkins-service
+          image: maikergonzales/jenkins-service:v1
+          ports:
+            - containerPort: 8081

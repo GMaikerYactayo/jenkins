@@ -73,6 +73,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Kubernetes'){
+            steps{
+                script{
+                    echo 'Deploying to Kubernetes...'
+                    withCredentials([file(credentialsId: 'CONFIG_K8S', variable: 'CONFIG_FILE')]) {
+                        sh "kubectl --kubeconfig=${CONFIG_FILE} apply -f https://github.com/GMaikerYactayo/jenkins/k8s/00-namespace.yml"
+                        sh "kubectl --kubeconfig=${CONFIG_FILE} apply -f https://github.com/GMaikerYactayo/jenkins/k8s/01-jenkins-deployment.yml"
+                        sh "kubectl --kubeconfig=${CONFIG_FILE} apply -f https://github.com/GMaikerYactayo/jenkins/k8s/02-jenkins-service.yml"
+                    }
+                }
+            }
+        }
     }
 
     post {

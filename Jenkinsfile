@@ -57,7 +57,7 @@ pipeline {
                 script{
                     echo 'Building image....'
                 }
-                sh 'docker build -t maikergonzales/jenkins-service:v1 -f Dockerfile .'
+                docker.build('maikergonzales/jenkins-service:v1', '-f Dockerfile .')
             }
         }
 
@@ -66,8 +66,11 @@ pipeline {
                 script{
                     withCredentials([string(credentialsId: '${PASSWORD_DOCKER}', variable: 'dockerhubpwd')]) {
                         sh 'docker login -u maikergonzales -p ${dockerhubpwd}'
+                        docker.withRegistry('https://hub.docker.com', 'docker-credentials') {
+                            docker.image('maikergonzales/jenkins-service:v1').push()
+                        }
+                        sh 'docker push maikergonzales/jenkins-service:v1'
                     }
-                    sh 'docker push maikergonzales/jenkins-service:v1'
                 }
             }
         }

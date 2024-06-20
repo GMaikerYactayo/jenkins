@@ -79,8 +79,7 @@ class ProductServiceTest {
         List<ProductDTO> productDTOList = productService.findAll();
 
         // then
-        assertThat(productDTOList).isNotNull();
-        assertThat(productDTOList.size()).isEqualTo(2);
+        assertThat(productDTOList).hasSize(2);
     }
 
     @DisplayName("Product save test")

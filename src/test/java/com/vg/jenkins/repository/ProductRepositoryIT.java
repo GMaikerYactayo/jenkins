@@ -48,8 +48,7 @@ class ProductRepositoryIT {
         productRepository.findAll();
 
         // then
-        assertThat(productList).isNotNull();
-        assertThat(productList.size()).isEqualTo(2);
+        assertThat(productList).hasSize(2);
     }
 
     @DisplayName("Product save test")

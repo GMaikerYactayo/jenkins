@@ -15,11 +15,15 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    private final ProductMapper productMapper;
 
     @Autowired
-    private ProductMapper productMapper;
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+        this.productRepository = productRepository;
+        this.productMapper = productMapper;
+    }
 
     @Override
     public ProductDTO save(ProductDTO product) {
@@ -61,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> findAll() {
         return productRepository.findAll().stream()
                 .map(productMapper::mapToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

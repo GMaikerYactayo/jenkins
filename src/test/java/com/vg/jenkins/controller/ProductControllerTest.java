@@ -42,10 +42,10 @@ class ProductControllerTest {
 
     String endPoint = "/api/v1/products";
 
-    @DisplayName("Test find all products")
+    @DisplayName("Junit test for method findAllProducts")
     @Test
-    void findAll() throws Exception {
-        // Given
+    void givenProductsList_whenFindAllProducts_thenReturnProductsList() throws Exception {
+        // Given - precondition or setup
         List<ProductDTO> productDTOList = Arrays.asList(
                 ProductDTO.builder()
                         .name("Product 1")
@@ -63,22 +63,21 @@ class ProductControllerTest {
 
         given(productService.findAll()).willReturn(productDTOList);
 
-        // When
+        // When - action or the behavior that we are go int to test
         ResultActions response = mockMvc.perform(get(endPoint));
 
-        // then
+        // then - verify the output
         response.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(productDTOList.size())))
                 .andExpect(jsonPath("$[0].name", is("Product 1")))
                 .andExpect(jsonPath("$[1].name", is("Product 2")));
-        ;
     }
 
-    @DisplayName("Product save test")
+    @DisplayName("Junit test for saveProduct method")
     @Test
-    void save() throws Exception {
-        // Given
+    void giveProductObject_whenSaveProduct_thenReturnProductObject() throws Exception {
+        // Given - precondition or setup
         ProductDTO productDTO = ProductDTO.builder()
                 .name("Product 1")
                 .description("test")
@@ -88,12 +87,12 @@ class ProductControllerTest {
 
         given(productService.save(productDTO)).willReturn(productDTO);
 
-        // When
+        // When - action or the behavior that we are go int to test
         ResultActions response = mockMvc.perform(post(endPoint)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productDTO)));
 
-        // then
+        // then - verify the output
         response.andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo(productDTO.getName())))
@@ -103,10 +102,10 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.updatedAt", nullValue()));
     }
 
-    @DisplayName("Product update test")
+    @DisplayName("Junit test for UpdateProduct method")
     @Test
-    void update() throws Exception {
-        // Given
+    void givenProductObject_whenUpdateProduct_thenReturnUpdatedProduct() throws Exception {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -125,12 +124,12 @@ class ProductControllerTest {
 
         given(productService.update(product.getProductId(), productDTO)).willReturn(productDTO);
 
-        // When
+        // When - action or the behavior that we are go int to test
         ResultActions response = mockMvc.perform(put(endPoint + "/{id}", product.getProductId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(productDTO)));
 
-        // then
+        // then - verify the output
         response.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(productDTO.getName())))
@@ -140,10 +139,10 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.updatedAt", equalTo(productDTO.getUpdatedAt().toString())));
     }
 
-    @DisplayName("Test delete product by id")
+    @DisplayName("Junit test for deleteProduct method")
     @Test
-    void deleteById() throws Exception {
-        // Given
+    void givenProductObject_whenDeleteProduct_thenNothing() throws Exception {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -154,19 +153,19 @@ class ProductControllerTest {
 
         willDoNothing().given(productService).delete(product.getProductId());
 
-        // When
+        // When - action or the behavior that we are go int to test
         ResultActions response = mockMvc.perform(delete(endPoint + "/{id}", product.getProductId()));
 
-        // Then
+        // then - verify the output
         response.andExpect(status().isNoContent())
                 .andDo(print());
 
     }
 
-    @DisplayName("Test find product by id")
+    @DisplayName("Junit test for findProductById method")
     @Test
-    void findById() throws Exception {
-        // Given
+    void givenProductId_whenEmployeeFindById_thenReturnProductObject() throws Exception {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -184,10 +183,10 @@ class ProductControllerTest {
 
         given(productService.findById(product.getProductId())).willReturn(productDTO);
 
-        // When
+        // When - action or the behavior that we are go int to test
         ResultActions response = mockMvc.perform(get(endPoint + "/{id}", product.getProductId()));
 
-        // Then
+        // then - verify the output
         response.andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(productDTO.getName())))

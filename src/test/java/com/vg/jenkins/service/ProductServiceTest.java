@@ -35,10 +35,10 @@ class ProductServiceTest {
     @InjectMocks
     private ProductServiceImpl productService;
 
-    @DisplayName("Test find all products")
+    @DisplayName("Junit test for method findAllProducts")
     @Test
-    void findAll() {
-        // Given
+    void givenProductsList_whenFindAllProducts_thenReturnProductsList() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -75,17 +75,17 @@ class ProductServiceTest {
         given(productMapper.mapToDTO(product)).willReturn(productDTO);
         given(productMapper.mapToDTO(product2)).willReturn(productDTO2);
 
-        // When
+        // When - action or the behavior that we are go int to test
         List<ProductDTO> productDTOList = productService.findAll();
 
-        // then
+        // then - verify the output
         assertThat(productDTOList).hasSize(2);
     }
 
-    @DisplayName("Product save test")
+    @DisplayName("Junit test for saveProduct method")
     @Test
-    void save() {
-        // Given
+    void giveProductObject_whenSaveProduct_thenReturnProductObject() {
+        // Given - precondition or setup
         ProductDTO productDTO = ProductDTO.builder()
                 .name("Product 1")
                 .description("test")
@@ -99,10 +99,10 @@ class ProductServiceTest {
         given(productRepository.save(any(Product.class))).willReturn(product);
         given(productMapper.mapToDTO(product)).willReturn(productDTO);
 
-        // When
+        // When - action or the behavior that we are go int to test
         ProductDTO savedProduct = productService.save(productDTO);
 
-        // Then
+        // then - verify the output
         assertThat(savedProduct.getName()).isEqualTo("Product 1");
         assertThat(savedProduct.getDescription()).isEqualTo("test");
         assertThat(savedProduct.getPrice()).isEqualTo(BigDecimal.valueOf(10.00));
@@ -110,10 +110,10 @@ class ProductServiceTest {
         assertThat(savedProduct.getUpdatedAt()).isNull();
     }
 
-    @DisplayName("Product update test")
+    @DisplayName("Junit test for UpdateProduct method")
     @Test
-    void update() {
-        // Given
+    void givenProductObject_whenUpdateProduct_thenReturnUpdatedProduct() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -134,10 +134,10 @@ class ProductServiceTest {
         given(productRepository.save(product)).willReturn(product);
         given(productMapper.mapToDTO(product)).willReturn(productDTO);
 
-        // When
+        // When - action or the behavior that we are go int to test
         ProductDTO updatedProduct = productService.update(product.getProductId(), productDTO);
 
-        // Then
+        // then - verify the output
         assertThat(updatedProduct.getName()).isEqualTo("Product 1");
         assertThat(updatedProduct.getDescription()).isEqualTo("update");
         assertThat(updatedProduct.getPrice()).isEqualTo(BigDecimal.valueOf(10.00));
@@ -145,10 +145,10 @@ class ProductServiceTest {
         assertThat(updatedProduct.getUpdatedAt()).isEqualTo(LocalDate.now());
     }
 
-    @DisplayName("Test delete product by id")
+    @DisplayName("Junit test for deleteProduct method")
     @Test
-    void delete() {
-        // Given
+    void givenProductObject_whenDeleteProduct_thenNothing() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -159,17 +159,17 @@ class ProductServiceTest {
 
         given(productRepository.findById(product.getProductId())).willReturn(Optional.of(product));
 
-        // When
+        // When - action or the behavior that we are go int to test
         productService.delete(product.getProductId());
 
-        // then
+        // then - verify the output
         verify(productRepository).deleteById(product.getProductId());
     }
 
-    @DisplayName("Test find product by id")
+    @DisplayName("Junit test for findProductById method")
     @Test
-    void findById() {
-        // Given
+    void givenProductId_whenEmployeeFindById_thenReturnProductObject() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -189,10 +189,10 @@ class ProductServiceTest {
         given(productRepository.findById(product.getProductId())).willReturn(Optional.of(product));
         given(productMapper.mapToDTO(product)).willReturn(productDTO);
 
-        // When
+        // When - action or the behavior that we are go int to test
         productService.findById(product.getProductId());
 
-        // then
+        // then - verify the output
         assertThat(productDTO.getName()).isEqualTo("Product 1");
         assertThat(productDTO.getDescription()).isEqualTo("test");
         assertThat(productDTO.getPrice()).isEqualTo(BigDecimal.valueOf(10.00));

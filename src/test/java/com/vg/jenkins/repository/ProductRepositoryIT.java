@@ -20,10 +20,10 @@ class ProductRepositoryIT {
     @Autowired
     private ProductRepository productRepository;
 
-    @DisplayName("Test find all products")
+    @DisplayName("Junit test for method findAll")
     @Test
-    void findAll() {
-        // Given
+    void givenProductsList_whenFindAll_thenReturnProductsList() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -44,17 +44,17 @@ class ProductRepositoryIT {
         productList.add(product);
         productList.add(product2);
 
-        // When
+        // When - action or the behavior that we are go int to test
         productRepository.findAll();
 
-        // then
+        // then - verify the output
         assertThat(productList).hasSize(2);
     }
 
-    @DisplayName("Product save test")
+    @DisplayName("Junit test for save method")
     @Test
-    void save() {
-        // Given
+    void giveProductObject_whenSave_thenReturnSavedProduct() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -63,10 +63,10 @@ class ProductRepositoryIT {
                 .createdAt(LocalDate.now())
                 .build();
 
-        // When
+        // When - action or the behavior that we are go int to test
         Product savedProduct = productRepository.save(product);
 
-        // Then
+        // then - verify the output
         assertThat(savedProduct.getProductId()).isNotNull();
         assertThat(savedProduct.getName()).isEqualTo("Product 1");
         assertThat(savedProduct.getDescription()).isEqualTo("test");
@@ -75,10 +75,10 @@ class ProductRepositoryIT {
         assertThat(savedProduct.getUpdatedAt()).isNull();
     }
 
-    @DisplayName("Test delete product by id")
+    @DisplayName("Junit test for deleteById method")
     @Test
-    void delete() {
-        // Given
+    void givenProductObject_whenDelete_thenRemove() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -87,18 +87,18 @@ class ProductRepositoryIT {
                 .createdAt(LocalDate.now())
                 .build();
 
-        // When
+        // When - action or the behavior that we are go int to test
         productRepository.deleteById(product.getProductId());
 
-        // then
+        // then - verify the output
         Optional<Product> productOptional = productRepository.findById(product.getProductId());
         assertThat(productOptional).isNotPresent();
     }
 
-    @DisplayName("Test find product by id")
+    @DisplayName("Junit test for findById method")
     @Test
-    void findById() {
-        // Given
+    void givenProductObject_whenFindById_thenReturnProductObject() {
+        // Given - precondition or setup
         Product product = Product.builder()
                 .productId(1L)
                 .name("Product 1")
@@ -110,10 +110,10 @@ class ProductRepositoryIT {
         productRepository.save(product);
         productRepository.save(product);
 
-        // When
+        // When - action or the behavior that we are go int to test
         Optional<Product> productOptional = productRepository.findById(product.getProductId());
 
-        // then
+        // then - verify the output
         assertThat(productOptional).isPresent();
         assertThat(productOptional.get().getProductId()).isEqualTo(1L);
         assertThat(productOptional.get().getName()).isEqualTo("Product 1");

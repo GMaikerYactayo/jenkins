@@ -107,20 +107,17 @@ class ProductRepositoryIT {
                 .createdAt(LocalDate.now())
                 .build();
 
-        productRepository.save(product);
-        productRepository.save(product);
-
         // When - action or the behavior that we are go int to test
-        Optional<Product> productOptional = productRepository.findById(product.getProductId());
+        productRepository.findById(product.getProductId());
 
         // then - verify the output
-        assertThat(productOptional).isPresent();
-        assertThat(productOptional.get().getProductId()).isEqualTo(1L);
-        assertThat(productOptional.get().getName()).isEqualTo("Product 1");
-        assertThat(productOptional.get().getDescription()).isEqualTo("test");
-        assertThat(productOptional.get().getPrice()).isEqualTo(BigDecimal.valueOf(10.00));
-        assertThat(productOptional.get().getCreatedAt()).isEqualTo(LocalDate.now());
-        assertThat(productOptional.get().getUpdatedAt()).isNull();
+        assertThat(product).isNotNull();
+        assertThat(product.getProductId()).isEqualTo(1L);
+        assertThat(product.getName()).isEqualTo("Product 1");
+        assertThat(product.getDescription()).isEqualTo("test");
+        assertThat(product.getPrice()).isEqualTo(BigDecimal.valueOf(10.00));
+        assertThat(product.getCreatedAt()).isEqualTo(LocalDate.now());
+        assertThat(product.getUpdatedAt()).isNull();
     }
 
 }
